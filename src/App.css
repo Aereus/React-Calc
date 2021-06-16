@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Source+Sans+Pro&display=swap');
 *{
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: Source Sans Pro;
+    
 }
 
 .row{
@@ -9,16 +13,29 @@
 }
 
 .App{
+    height:500px;
+    width:250px;
+    background-color:#23252D;
     position: absolute;
     top:50%;
     left:50%;
     transform: translate(-50%,-50%);
+    display:flex;
+    flex-direction:column;
+    justify-content: flex-end;
+    padding:8px;
+    border-radius: 10px;
 }
 
 input{
     width: 100%;
-    height: 30px;
+    height: 60px;
     border-radius: 5px;
-    border: 2px solid black;
+    border:0px;
+    margin-bottom: 10px;
+    background-color:#272B33;
     text-align: right;
+    color:#EEEFEE;
+    font-weight: bold;
+    font-size: 35px;
 }

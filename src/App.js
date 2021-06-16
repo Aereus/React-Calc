@@ -12,10 +12,16 @@ function App() {
     return setResult(result.slice(0,-1)+e.target.value);
   }
   const ClearClick = (e)=>(setResult(""));
+  // setResult(String(eval(result)))
+  const EqualClick = (e)=>{
+    if(result.length!==0)
+    {setResult(String(parseFloat(eval(result).toFixed(5))))}
+  };
 
-  const EqualClick = (e)=>(setResult(eval(result)));
-
-  const Backspace = (e)=>(setResult(result.slice(0,-1)));
+  const Backspace = (e)=>{
+    if(result.length!==0)
+    {setResult(String(result).slice(0,-1))}
+  };
 
   return (
     <div className="App">

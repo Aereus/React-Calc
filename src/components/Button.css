@@ -1,19 +1,31 @@
 button{
     width:50px;
     height: 50px;
-    background-color:rgb(50, 161, 224);
+    background-color: #EEEFEE;
     border-radius:5px;
     border:0px;
     margin:3px;
+    flex:2;
+    flex-grow: 1;
+    transition:0.2s;
+    font-size:20px;
 }
 button:hover{
-    background-color:rgb(90, 186, 241);
+    background-color:#c4c5c4;
+}
+button:active{
+    transform: translateY(2px);
 }
 .operatorClass{
     font-size:20px;
+    color: #F47A79;
 }
 
 .saveClass{
     flex:2;
+    flex-grow: 2;
+    color:#04a083;
+    font-size:15px;
+    font-family: Source Sans Pro;
 }
 
