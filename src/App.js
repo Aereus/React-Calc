@@ -5,18 +5,33 @@ import Button from './components/Button'
 
 function App() {
   const operators=['*','+','-','/'];
-  const [result,setResult] = useState("");
+  const [result, setResult] = useState("");
+   
   const ButtonClick = (e) =>{
     if(!(operators.includes(e.target.value)&&operators.includes(result[result.length-1]))){
       return setResult(result+e.target.value);}
     return setResult(result.slice(0,-1)+e.target.value);
   }
-  const ClearClick = (e)=>(setResult(""));
-  // setResult(String(eval(result)))
-  const EqualClick = (e)=>{
-    if(result.length!==0)
-    {setResult(String(parseFloat(eval(result).toFixed(5))))}
+   
+  const ClearClick = (e) => (setResult(""));
+  
+  const clback = () => { 
+    setResult(String(parseFloat(eval(result).toFixed(5))));
+  }
+
+  const EqualClick = (e) => {
+    if(result.length !== 0)
+    { 
+      if(result[0]==0) {
+      let kirk = result.slice(1);
+      console.log("First",kirk);
+      setResult(kirk);
+      // console.log(result) 
+      }
+    //  setTimeout (()=>),1000)}
   };
+  clback();
+}
 
   const Backspace = (e)=>{
     if(result.length!==0)
@@ -25,8 +40,10 @@ function App() {
 
   return (
     <div className="App">
+    <div className="container">
+    
       <div className="row">
-        <input type="text" disabled="true" value={result}/>
+        <input type="text" disabled={true} value={result}/>
       </div>
       <div className="row">
         <Button handleClick={ButtonClick} value={7}/>
@@ -48,7 +65,7 @@ function App() {
       </div>
       <div className="row">
     
-        <Button handleClick={ButtonClick} style={{flex:2}}  value={0}/>
+        <Button handleClick={ButtonClick} style={{flex:2.1}}  value={0}/>
         <Button handleClick={Backspace} value={'C'}/>
         <Button handleClick={ButtonClick} clName="operatorClass" value={'+'}/>
         
@@ -60,8 +77,9 @@ function App() {
       <div className="row">
         <Button clName="saveClass" value={'Save'}></Button>
       </div>
-      
     </div>
+    </div>
+    
   );
 }
 
