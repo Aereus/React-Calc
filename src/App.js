@@ -6,31 +6,45 @@ import Button from './components/Button'
 function App() {
   const operators=['*','+','-','/'];
   const [result, setResult] = useState("");
+  const [calcOver,setCalc]=useState(0);
+ 
+  
+  const reset = ()=>{
+    if(calcOver!==0){
+      setCalc(0);
+    }
+  }
    
   const ButtonClick = (e) =>{
+    reset();
     if(!(operators.includes(e.target.value)&&operators.includes(result[result.length-1]))){
-      return setResult(result+e.target.value);}
+      return setResult(calcOver?e.target.value:result+e.target.value);}
     return setResult(result.slice(0,-1)+e.target.value);
   }
    
   const ClearClick = (e) => (setResult(""));
   
-  const clback = () => { 
-    setResult(String(parseFloat(eval(result).toFixed(5))));
-  }
 
   const EqualClick = (e) => {
-    if(result.length !== 0)
-    { 
-      if(result[0]==0) {
-      let kirk = result.slice(1);
-      console.log("First",kirk);
-      setResult(kirk);
-      // console.log(result) 
+    try{
+      let rescop=result;
+      if(rescop.length !== 0)
+      { 
+        let start=1;
+        for(let i=0;i<rescop.length;i++){
+          if(start===1&&rescop[i]==0){
+            rescop=rescop.slice(0,i)+rescop.slice(i+1);
+            continue;
+          }
+          start=0;
+          if(operators.includes(rescop[i])){
+            start=1;
+          }
+        }
+        setResult(parseFloat(eval(rescop).toFixed(5)));
       }
-    //  setTimeout (()=>),1000)}
-  };
-  clback();
+    }catch(e){setResult('Math Error');}
+    setCalc(1);
 }
 
   const Backspace = (e)=>{
