@@ -1,8 +1,8 @@
-import react from 'react';
 
-import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
+import './Home.css'
+import React,{useState} from 'react'
 import Button from './components/Button'
-
+import {Link} from "react-router-dom"
 
 function Home(){
     const operators=['*','+','-','/'];
@@ -16,8 +16,9 @@ function Home(){
     }
     }
     const saveResult =async ()=>{
-    
-    fetch("http://localhost:8080/result",{
+    if(result.length!==0)
+    {
+        fetch("http://localhost:8080/result",{
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
@@ -25,10 +26,10 @@ function Home(){
         },
         method: 'POST',
         body:JSON.stringify({"result":result}),
-    })
-    .then(response=>{console.log(response);return response.json()})
-    .then(data=>{console.log(data)})
-    .catch(err=>console.log(err))    
+        })
+        .then(response=>{console.log(response);return response.json()})
+        .then(data=>{console.log(data)})
+        .catch(err=>console.log(err))}    
     }
     
     const ButtonClick = (e) =>{
@@ -104,10 +105,13 @@ function Home(){
             <Button handleClick={EqualClick} clName="operatorClass" value={'='}/>
             </div>
             <div className="row">
-            <Button value={'Save'} handleClick={saveResult} clName="saveClass"></Button>
+            <Link to="/result" className="linkClass"><Button value={'Save'} handleClick={saveResult} clName="saveClass"/></Link>
             </div>
         </div>
     </div>
     
-    );
+    )
 }
+
+export default Home;
+
