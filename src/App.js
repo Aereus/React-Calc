@@ -1,5 +1,7 @@
+
 import React,{useState} from 'react'
 import './App.css';
+import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
 import Button from './components/Button'
 
 
@@ -13,6 +15,24 @@ function App() {
     if(calcOver!==0){
       setCalc(0);
     }
+  }
+  const saveResult =async ()=>{
+    
+    fetch("http://localhost:8080/result",{
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        
+      },
+      method: 'POST',
+      body:JSON.stringify({"result":result}),
+    })
+    .then(response=>{console.log(response);return response.json()})
+    .then(data=>{console.log(data)})
+    .catch(err=>console.log(err))
+    
+    
+      
   }
    
   const ButtonClick = (e) =>{
@@ -57,7 +77,10 @@ function App() {
     <div className="container">
     
       <div className="row">
-        <input type="text" disabled={true} value={result}/>
+       
+          <input type="text" readOnly={true} value={result}/>
+          
+       
       </div>
       <div className="row">
         <Button handleClick={ButtonClick} value={7}/>
@@ -89,7 +112,7 @@ function App() {
         <Button handleClick={EqualClick} clName="operatorClass" value={'='}/>
       </div>
       <div className="row">
-        <Button clName="saveClass" value={'Save'}></Button>
+      <Button value={'Save'} handleClick={saveResult} clName="saveClass"></Button>
       </div>
     </div>
     </div>
