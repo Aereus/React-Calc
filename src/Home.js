@@ -3,29 +3,33 @@ import './Home.css'
 import React,{useState} from 'react'
 import Button from './components/Button'
 import {Link} from "react-router-dom"
+import {useDispatch,useSelector} from 'react-redux'
+import {modifyResult,toggleCalc} from './redux/action'
 
 function Home(){
     const operators=['*','+','-','/'];
-    const [result, setResult] = useState("");
-    const [calcOver,setCalc]=useState(0);
+    // const [result, setResult] = useState("");
+    // const [calcOver,setCalc]= useState(0);
+    const dispatch = useDispatch();
+    const res = useSelector(state=>state.data);
+    const calcO = useSelector(state=>state.calcOver);
 
-
+    
     const reset = ()=>{
-    if(calcOver!==0){
-        setCalc(0);
+    if(calcO!==false){
+        dispatch(toggleCalc());
     }
     }
     const saveResult =async ()=>{
-    if(result.length!==0)
+    if(res.length!==0)
     {
         fetch("http://localhost:8080/result",{
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        
         },
         method: 'POST',
-        body:JSON.stringify({"result":result}),
+        body:JSON.stringify({"result":res}),
         })
         .then(response=>{console.log(response);return response.json()})
         .then(data=>{console.log(data)})
@@ -34,17 +38,17 @@ function Home(){
     
     const ButtonClick = (e) =>{
     reset();
-    if(!(operators.includes(e.target.value)&&operators.includes(result[result.length-1]))){
-        return setResult(calcOver?e.target.value:result+e.target.value);}
-    return setResult(result.slice(0,-1)+e.target.value);
+    if(!(operators.includes(e.target.value)&&operators.includes(res[res.length-1]))){
+        return dispatch(modifyResult(calcO?e.target.value:res+e.target.value))}
+    return dispatch(modifyResult(res.slice(0,-1)+e.target.value));
     }
     
-    const ClearClick = (e) => (setResult(""));
+    const ClearClick = (e) => (dispatch(modifyResult('')));
 
 
     const EqualClick = (e) => {
     try{
-        let rescop=result;
+        let rescop=res;
         if(rescop.length !== 0)
         { 
         let start=1;
@@ -58,22 +62,22 @@ function Home(){
             start=1;
             }
         }
-        setResult(parseFloat(eval(rescop).toFixed(5)));
+        dispatch(modifyResult(parseFloat(eval(rescop).toFixed(5))));
         }
-    }catch(e){setResult('Math Error');}
-    setCalc(1);
+    }catch(e){dispatch(modifyResult('Math Error'))}
+    dispatch(toggleCalc())
     }
 
     const Backspace = (e)=>{
-    if(result.length!==0)
-    {setResult(String(result).slice(0,-1))}
+    if(res.length!==0)
+    {dispatch(modifyResult(String(res).slice(0,-1)))}
     };
 
     return (
     <div className="App">
         <div className="container">
             <div className="row">           
-             <input type="text" readOnly={true} value={result}/>              
+             <input type="text" readOnly={true} onChange={(e)=>console.log(e.target.value)} value={res}/>              
             </div>
             <div className="row">
             <Button handleClick={ButtonClick} value={7}/>
@@ -93,12 +97,10 @@ function Home(){
             <Button handleClick={ButtonClick} value={3}/>
             <Button handleClick={ButtonClick} clName="operatorClass" value={'-'}/>
             </div>
-            <div className="row">
-        
+            <div className="row">    
             <Button handleClick={ButtonClick} style={{flex:2.1}}  value={0}/>
             <Button handleClick={Backspace} value={'C'}/>
-            <Button handleClick={ButtonClick} clName="operatorClass" value={'+'}/>
-            
+            <Button handleClick={ButtonClick} clName="operatorClass" value={'+'}/>         
             </div>
             <div className="row">
             <Button handleClick={ClearClick} clName="saveClass" value={'Clear'}/>
